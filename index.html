@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LENS & SHOT</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <header class="header">
+        <div class="header-left">
+            <div class="header-logo" id="logo-btn" tabindex="0">
+<svg class="logo-svg" width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Esquinas cuadradas rectas -->
+    <path d="M9 3H4v5M15 21h5v-5" stroke="#2455D9" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter"/>
+    <circle cx="12" cy="12" r="3.5" fill="#C9470B"/>
+</svg>
+                <span class="logo-text">lens <span class="logo-accent">&</span> shot</span>
+            </div>
+            <button class="btn-atras-header" id="btn-atras-global" style="display: none;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                Atrás
+            </button>
+            <nav class="header-nav">
+                <button class="nav-btn" data-filtro="camaras">Cámaras</button>
+                <button class="nav-btn" data-filtro="lentes">Lentes</button>
+                <button class="nav-btn" data-filtro="ofertas">Ofertas</button>
+            </nav>
+        </div>
+
+        <div class="header-search">
+            <svg class="icon-search" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input type="text" id="buscador-input" placeholder="Buscar cámaras, lentes..." autocomplete="off">
+            
+            <div class="search-suggestions" id="search-suggestions" style="display: none;">
+                <div class="sug-item">Sony</div>
+                <div class="sug-item">Canon</div>
+                <div class="sug-item">Profesionales</div>
+                <div class="sug-item">Casuales</div>
+            </div>
+        </div>
+
+        <div class="header-actions">
+            <button class="action-btn" id="btn-nav-pedidos">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                Mis pedidos
+            </button>
+            <button class="action-btn" id="btn-nav-carrito">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                Carrito (<span id="carrito-contador">0</span>)
+            </button>
+            <button class="action-btn text-primary" id="btn-nav-login">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                <span id="user-name-display">Iniciar sesión</span>
+            </button>
+            <!-- Botón de Cerrar Sesión (Oculto por defecto) -->
+            <button class="action-btn text-sale" id="btn-nav-logout" style="display: none;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+            </button>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <!-- VISTA: INICIO -->
+        <section id="vista-inicio" class="vista activa">
+            <div class="hero-section">
+                <h1>Fotografía sin complicaciones.</h1>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary" id="btn-hero-camaras">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+                        Explorar cámaras
+                    </button>
+                    <button class="btn btn-secondary" id="btn-hero-ofertas">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+                        Ver ofertas
+                    </button>
+                </div>
+            </div>
+
+            <div class="categorias-home mb-40">
+                <h2 class="mb-24">Categorías</h2>
+                <div class="grid-categorias">
+                    <div class="card-categoria card-cat-click" data-filtro="camaras" data-search="profesional">
+                        <div class="cat-icon text-primary"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg></div>
+                        <h3>Cámaras profesionales</h3>
+                        <span class="link-detalle">Explorar →</span>
+                    </div>
+                    <div class="card-categoria card-cat-click" data-filtro="camaras" data-search="casual">
+                        <div class="cat-icon text-primary"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg></div>
+                        <h3>Mirrorless y casuales</h3>
+                        <span class="link-detalle">Explorar →</span>
+                    </div>
+                    <div class="card-categoria card-cat-click" data-filtro="lentes" data-search="">
+                        <div class="cat-icon text-primary"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4"></circle><line x1="21.17" y1="8" x2="12" y2="8"></line><line x1="3.95" y1="6.06" x2="8.54" y2="14"></line><line x1="10.88" y1="21.94" x2="15.46" y2="14"></line></svg></div>
+                        <h3>Lentes ópticos</h3>
+                        <span class="link-detalle">Explorar →</span>
+                    </div>
+                    <div class="card-categoria card-cat-click" data-filtro="ofertas" data-search="">
+                        <div class="cat-icon text-primary"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg></div>
+                        <h3>Ofertas</h3>
+                        <span class="link-detalle">Explorar →</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="destacados-home">
+                <h2 class="mb-24">Productos destacados</h2>
+                <div class="grid-productos" id="grid-destacados"></div>
+            </div>
+        </section>
+
+        <!-- VISTA: CATÁLOGO -->
+        <section id="vista-catalogo" class="vista oculta">
+            <div class="catalogo-layout">
+                <aside class="filtros-sidebar">
+                    <div class="bloque-filtro">
+                        <h3>CATEGORÍA</h3>
+                        <ul class="filtro-lista" id="lista-categorias">
+                            <li class="filtro-item activo" data-filtro="todas">Todas</li>
+                            <li class="filtro-item" data-filtro="camaras">Cámaras</li>
+                            <li class="filtro-item" data-filtro="lentes">Lentes</li>
+                        </ul>
+                    </div>
+                    <div class="bloque-filtro">
+                        <h3>PRECIO</h3>
+                        <ul class="filtro-lista" id="lista-precios">
+                            <li class="filtro-item activo" data-precio="todos">Todos</li>
+                            <li class="filtro-item" data-precio="hasta-500">Hasta $500</li>
+                            <li class="filtro-item" data-precio="500-1000">$500 - $1.000</li>
+                            <li class="filtro-item" data-precio="mas-1000">Más de $1.000</li>
+                        </ul>
+                    </div>
+                </aside>
+
+                <div class="productos-contenedor">
+                    <div class="productos-header">
+                        <div class="header-titulos">
+                            <h2 id="catalogo-titulo">Catálogo</h2>
+                            <span class="text-secondary" id="catalogo-subtitulo">0 productos</span>
+                        </div>
+                        <span class="text-oferta-limitada" id="catalogo-aviso" style="display: none;">Precios rebajados por tiempo limitado</span>
+                    </div>
+                    <div class="grid-productos" id="grid-catalogo"></div>
+                    <div id="sin-resultados" style="display: none; padding: 40px; text-align: center;">No encontramos productos que coincidan con tu búsqueda.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VISTA: DETALLE DE PRODUCTO -->
+        <section id="vista-producto" class="vista oculta">
+            <div class="detalle-layout">
+                <div class="detalle-galeria">
+                    <div class="img-principal-container">
+                        <button id="btn-galeria-prev" class="btn-galeria">‹</button>
+                        <img id="detalle-img-principal" src="" alt="" class="img-principal">
+                        <button id="btn-galeria-next" class="btn-galeria">›</button>
+                    </div>
+                    <div class="miniaturas" id="detalle-miniaturas"></div>
+                </div>
+                <div class="detalle-info">
+                    <h2 id="detalle-nombre">Nombre</h2>
+                    <p id="detalle-categoria" class="text-secondary">Categoría</p>
+                    <div class="detalle-precio-box">
+                        <span id="detalle-precio" class="precio-actual text-sale">$0.00</span>
+                        <span id="detalle-precio-anterior" class="precio-anterior"></span>
+                    </div>
+                    <p id="detalle-disponibilidad" class="disponibilidad">● Disponible</p>
+                    <p id="detalle-desc">Descripción</p>
+                    
+                    <div class="especificaciones">
+                        <h3>Características técnicas</h3>
+                        <table id="detalle-specs"></table>
+                    </div>
+
+                    <div class="detalle-acciones">
+                        <div class="cantidad-selector">
+                            <button id="detalle-btn-menos">-</button>
+                            <span id="detalle-cantidad">1</span>
+                            <button id="detalle-btn-mas">+</button>
+                        </div>
+                        <button class="btn btn-primary" id="btn-add-detail">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                            Agregar al carrito
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VISTA: CARRITO -->
+        <section id="vista-carrito" class="vista oculta">
+            <h2 class="mb-24">Carrito</h2>
+            <div id="carrito-vacio" class="carrito-vacio-card" style="display:none;">
+                <div class="carrito-vacio-content">
+                    <svg class="icono-vacio-svg" xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#DCE9FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                    <h3 class="mt-12">Tu carrito está vacío</h3>
+                    <p class="text-secondary mt-12 mb-24">Agrega cámaras o lentes para comenzar tu compra.</p>
+                </div>
+                <div class="carrito-vacio-footer">
+                    <button class="btn btn-primary btn-explorar-general">Explorar cámaras</button>
+                </div>
+            </div>
+            
+            <div id="carrito-lleno" class="carrito-layout">
+                <div class="carrito-items" id="lista-carrito"></div>
+                <div class="carrito-resumen">
+                    <h3>Resumen</h3>
+                    <div class="resumen-fila mt-24"><span class="text-secondary">Subtotal</span><span id="resumen-subtotal">$0.00</span></div>
+                    <div class="resumen-fila mt-12"><span class="text-secondary">Retiro en local</span><span>$0.00</span></div>
+                    <hr>
+                    <div class="resumen-fila total"><span>Total</span><span id="resumen-total">$0.00</span></div>
+                    <button class="btn btn-primary w-100 mt-24" id="btn-continuar-retiro">Continuar</button>
+                    <button class="btn btn-secondary w-100 mt-12 btn-seguir-general">Seguir comprando</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- VISTA: RETIRO -->
+        <section id="vista-retiro" class="vista oculta">
+            <div class="checkout-steps">
+                <div class="step-wrapper activo"><div class="step-circle">1</div><span>Retiro</span></div>
+                <div class="step-line"></div>
+                <div class="step-wrapper"><div class="step-circle">2</div><span>Pago</span></div>
+                <div class="step-line"></div>
+                <div class="step-wrapper"><div class="step-circle">3</div><span>Confirmación</span></div>
+            </div>
+            <div class="carrito-layout mt-24">
+                <div class="formulario-box">
+                    <h2>Retiro en local</h2>
+                    <p class="text-secondary mb-24">Recoge tu pedido en nuestro local. No tiene costo.</p>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Nombre completo</label>
+                            <input type="text" id="form-nombre" placeholder="Ej. Carlos Lozano" value="Carlos Lozano">
+                        </div>
+                        <div class="form-group">
+                            <label>Teléfono</label>
+                            <input type="text" id="form-telefono" placeholder="099 000 0000">
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Correo electrónico</label>
+                            <input type="email" id="form-correo" placeholder="correo@ejemplo.com" value="carlos@ejemplo.com">
+                        </div>
+                    </div>
+                    <div class="punto-retiro mt-24">
+                        <p class="d-flex-align">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2455D9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-8"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                            <strong>Punto de retiro</strong>
+                        </p>
+                        <p class="mt-12">LENS & SHOT · Local principal</p>
+                        <p class="text-secondary">Quito · Condado Shopping · Horario: 09:00–18:00</p>
+                    </div>
+                </div>
+                <div class="carrito-resumen">
+                    <h3>Resumen del pedido</h3>
+                    <div id="resumen-retiro-items" class="text-secondary mb-24 line-height-large mt-24"></div>
+                    <div class="resumen-fila total"><span>Total</span><span id="resumen-retiro-total">$0.00</span></div>
+                    <button class="btn btn-primary w-100 mt-24" id="btn-continuar-pago">Continuar al pago</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- VISTA: PAGO -->
+       <section id="vista-pago" class="vista oculta">
+            <div class="checkout-steps">
+                <div class="step-wrapper"><div class="step-circle">1</div><span>Retiro</span></div>
+                <div class="step-line"></div>
+                <div class="step-wrapper activo"><div class="step-circle">2</div><span>Pago</span></div>
+                <div class="step-line"></div>
+                <div class="step-wrapper"><div class="step-circle">3</div><span>Confirmación</span></div>
+            </div>
+            <div class="carrito-layout mt-24">
+                <div class="formulario-box">
+                    <h2>Método de pago</h2>
+                    <div class="opciones-pago mt-24">
+                        <label class="radio-box">
+                            <input type="radio" name="metodo-pago" value="tarjeta" checked>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-8"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+                            <span>Tarjeta</span>
+                            <span class="espaciador"></span>
+                            <span class="text-secondary">Pago online</span>
+                        </label>
+                        <label class="radio-box">
+                            <input type="radio" name="metodo-pago" value="efectivo">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-8"><rect x="2" y="6" width="20" height="12" rx="2"></rect><circle cx="12" cy="12" r="2"></circle><path d="M6 12h.01M18 12h.01"></path></svg>
+                            <span>Efectivo al retirar</span>
+                            <span class="espaciador"></span>
+                            <span class="text-secondary">Paga en el local</span>
+                        </label>
+                    </div>
+                    <div id="form-tarjeta" class="form-grid mt-24">
+                        <div class="form-group full-width">
+                            <label>Número de tarjeta</label>
+                            <input type="text" placeholder="1234567890123456" id="cc-num" maxlength="16" value="1234567890123456">
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Nombre en la tarjeta</label>
+                            <input type="text" placeholder="Ej. Carlos Lozano" id="cc-name" value="Carlos Lozano">
+                        </div>
+                        <div class="form-group">
+                            <label>Vencimiento</label>
+                            <input type="text" placeholder="MM/AA" id="cc-exp" maxlength="5" value="12/28">
+                        </div>
+                        <div class="form-group">
+                            <label>CVV</label>
+                            <input type="password" placeholder="123" id="cc-cvv" maxlength="4" value="123">
+                        </div>
+                    </div>
+                    <div id="form-efectivo" class="mt-24 punto-retiro" style="display:none;">
+                        <p><strong>Pago en efectivo</strong></p>
+                        <p class="text-secondary mt-12">Paga el valor total de tu pedido al momento de retirarlo en el local.</p>
+                    </div>
+                </div>
+                <div class="carrito-resumen">
+                    <h3>Resumen</h3>
+                    <div class="resumen-fila mt-24 mb-12"><span class="text-secondary">Retiro en local</span></div>
+                    <div class="resumen-fila mb-24"><span class="text-secondary" id="txt-resumen-metodo">Pago: Tarjeta</span></div>
+                    <div class="resumen-fila total"><span>Total a pagar</span><span id="resumen-pago-total">$0.00</span></div>
+                    <button class="btn btn-primary w-100 mt-24" id="btn-confirmar-pago">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                        Confirmar y pagar
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section id="vista-confirmacion" class="vista oculta">
+            <div class="checkout-steps">
+                <div class="step-wrapper"><div class="step-circle">1</div><span>Retiro</span></div>
+                <div class="step-line"></div>
+                <div class="step-wrapper"><div class="step-circle">2</div><span>Pago</span></div>
+                <div class="step-line"></div>
+                <div class="step-wrapper activo"><div class="step-circle">3</div><span>Confirmación</span></div>
+            </div>
+            <div class="confirmacion-box mt-24">
+                <div class="icon-success-large">✓</div>
+                <h2>Compra realizada</h2>
+                <p class="text-secondary mb-24" id="conf-pedido-num">Pedido #LS-00000</p>
+                <div id="conf-items" class="text-secondary line-height-large mb-24 text-left"></div>
+                <div class="resumen-fila total mb-24"><span>Total</span><span id="conf-total">$0.00</span></div>
+                <p id="conf-estado-pago" class="text-success text-left mb-12">Pago: Aprobado</p>
+                <p class="text-secondary text-left mb-24">Retiro: Pendiente</p>
+                <div class="hero-buttons justify-center">
+                    <button class="btn btn-primary" id="btn-ver-mis-pedidos-conf">Ver mi pedido</button>
+                    <button class="btn btn-secondary btn-seguir-general">Seguir comprando</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- VISTA: MIS PEDIDOS -->
+        <section id="vista-pedidos" class="vista oculta">
+            <div id="pedidos-vacio" class="carrito-vacio-card" style="display:none; max-width: 600px; margin: 0 auto;">
+                <div class="carrito-vacio-content">
+                    <svg class="icono-vacio-svg" xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#DCE9FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                    <h3 class="mt-12">No tienes pedidos recientes</h3>
+                    <p class="text-secondary mt-12 mb-24">Tus compras confirmadas aparecerán aquí.</p>
+                </div>
+                <div class="carrito-vacio-footer text-center" style="text-align: center;">
+                    <button class="btn btn-primary btn-explorar-general">Empezar a comprar</button>
+                </div>
+            </div>
+            
+            <div id="pedidos-llenos" class="text-left" style="display:none;">
+                <h2 class="mb-24">Mis pedidos</h2>
+                <p class="text-secondary mb-24">Consulta el estado y detalle de tus compras.</p>
+                <div id="lista-pedidos" class="pedidos-lista"></div>
+            </div>
+        </section>
+
+        <!-- VISTA: INICIAR SESIÓN -->
+       <!-- VISTA: INICIO DE SESIÓN -->
+        <section id="vista-login" class="vista oculta">
+            <div class="login-box">
+                <h2>Iniciar sesión</h2>
+                <p class="text-secondary mb-24">Ingresa tus datos para continuar.</p>
+                
+                <p id="login-error" class="text-sale mb-16 text-left" style="display:none; font-weight:600;">Usuario o contraseña incorrectos.</p>
+                
+                <div class="form-group mb-16 text-left">
+                    <label>Correo electrónico (Prueba: carlos@ejemplo.com)</label>
+                    <input type="email" placeholder="Ej. carlos@ejemplo.com" id="login-email" value="carlos@ejemplo.com">
+                </div>
+                <div class="form-group mb-24 text-left">
+                    <label>Contraseña (Prueba: 123456)</label>
+                    <input type="password" placeholder="Ingresa tu contraseña" id="login-pass" value="123456">
+                    <a href="#" class="link-detalle mt-12 d-block">¿Olvidaste tu contraseña?</a>
+                </div>
+                <button class="btn btn-primary w-100 mb-24" id="btn-submit-login">Iniciar sesión</button>
+                <p class="text-secondary">¿No tienes una cuenta? <a href="#" class="link-detalle">Crear cuenta</a></p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modales -->
+    <div id="overlay" class="overlay" style="display:none;"></div>
+
+    <div id="modal-agregado" class="modal" style="display:none;">
+        <div class="icon-success-large mx-auto mb-16" style="width:50px;height:50px;font-size:1.5rem;">✓</div>
+        <h3 class="mb-12">Producto agregado</h3>
+        <p class="text-secondary mb-24" id="txt-modal-agregado"></p>
+        <div class="hero-buttons">
+            <button class="btn btn-secondary w-100" id="btn-modal-seguir">Seguir comprando</button>
+            <button class="btn btn-primary w-100" id="btn-modal-ir-carrito">Ir al carrito</button>
+        </div>
+    </div>
+
+    <div id="modal-logout" class="modal" style="display:none;">
+        <h3 class="mb-12">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-sale)" stroke-width="2" class="mr-8"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+            ¿Cerrar sesión?
+        </h3>
+        <p class="text-secondary mb-24">¿Estás seguro de que deseas salir de tu cuenta?</p>
+        <div class="hero-buttons">
+            <button class="btn btn-secondary w-100" id="btn-cancelar-logout">Cancelar</button>
+            <button class="btn btn-primary w-100" id="btn-confirmar-logout">Sí, salir</button>
+        </div>
+    </div>
+    
+    <div id="modal-eliminar" class="modal" style="display:none;">
+        <h3 class="mb-12">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-sale)" stroke-width="2" class="mr-8"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+            ¿Eliminar producto?
+        </h3>
+        <p class="text-secondary mb-24" id="txt-modal-eliminar"></p>
+        <div class="hero-buttons">
+            <button class="btn btn-secondary w-100" id="btn-cancelar-eliminar">No, mantener</button>
+            <button class="btn btn-primary w-100" id="btn-confirmar-eliminar">Sí, eliminar</button>
+        </div>
+    </div>
+
+    <div id="modal-error" class="modal" style="display:none;">
+        <h3 class="mb-12 text-sale">⚠ Revisa los datos</h3>
+        <p class="text-secondary mb-24" id="txt-modal-error">Verifica que todos los campos de tu tarjeta estén llenos y sean correctos.</p>
+        <div class="hero-buttons">
+            <button class="btn btn-secondary w-100" id="btn-error-cambiar">Cerrar</button>
+        </div>
+    </div>
+
+    <div id="modal-stock" class="modal" style="display:none;">
+        <h3 class="mb-12 text-sale">⚠ Producto no disponible</h3>
+        <p class="text-secondary mb-24">Este producto se encuentra temporalmente sin stock. Puedes volver al catálogo para elegir otra opción.</p>
+        <div class="hero-buttons">
+            <button class="btn btn-secondary w-100" id="btn-cerrar-stock">Cerrar</button>
+            <button class="btn btn-primary w-100 btn-seguir-general">Volver al catálogo</button>
+        </div>
+    </div>
+
+    <div id="modal-detalle-pedido" class="modal modal-wide" style="display:none; text-align: left;">
+        <h3 class="mb-24">Detalle del Pedido <span id="md-num" class="text-primary"></span></h3>
+        <div id="md-items" class="mb-24"></div>
+        <hr>
+        <div class="resumen-fila mt-16 mb-12"><span class="text-secondary">Estado</span><span id="md-estado" class="text-sale"></span></div>
+        <div class="resumen-fila total mt-12 mb-24"><span>Total Pagado</span><span id="md-total"></span></div>
+        <button class="btn btn-primary w-100" onclick="cerrarModal('modal-detalle-pedido')">Cerrar detalle</button>
+    </div>
+
+    <script src="js/datos.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
