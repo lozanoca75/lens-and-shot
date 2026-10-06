@@ -1,3 +1,4 @@
+// 1. REFERENCIAS DEL DOM
 const vistas = {
     inicio: document.getElementById('vista-inicio'),
     catalogo: document.getElementById('vista-catalogo'),
@@ -24,6 +25,7 @@ let carrito = [];
 let pedidos = [];
 let productoSeleccionado = null;
 
+// Lógica de Autenticación
 let usuarioAutenticado = false;
 let vistaPostLogin = null;
 
@@ -52,10 +54,17 @@ document.addEventListener('click', (e) => {
 
 document.querySelectorAll('.sug-item').forEach(item => {
     item.addEventListener('click', (e) => {
+        let textoSugerencia = e.target.textContent.toLowerCase();
         searchInput.value = e.target.textContent;
-        filtroBusqueda = searchInput.value;
-        searchSuggestions.style.display = 'none';
         
+        if (textoSugerencia === 'profesionales' || textoSugerencia === 'casuales') {
+            filtroCat = 'todas';
+            filtroBusqueda = textoSugerencia === 'casuales' ? 'casual' : 'profesional';
+        } else {
+            filtroBusqueda = textoSugerencia;
+        }
+
+        searchSuggestions.style.display = 'none';
         sincronizarBotonesActivos();
         mostrarVista('catalogo');
         actualizarCatalogo();
@@ -63,12 +72,12 @@ document.querySelectorAll('.sug-item').forEach(item => {
 });
 
 searchInput.addEventListener('input', (e) => {
-    filtroBusqueda = e.target.value;
+    filtroBusqueda = e.target.value.toLowerCase();
     mostrarVista('catalogo');
     actualizarCatalogo();
 });
 
-// CLICS EN INICIO (HERO Y CATEGORIAS)
+// CLICS EN TARJETAS DE CATEGORÍA DEL HOME Y HERO
 document.getElementById('btn-hero-camaras').addEventListener('click', () => {
     filtroCat = 'camaras'; filtroBusqueda = ''; searchInput.value = '';
     sincronizarBotonesActivos(); mostrarVista('catalogo'); actualizarCatalogo();
@@ -105,10 +114,8 @@ function renderizarInicio() {
 function actualizarCatalogo() {
     let filtrados = inventario;
 
-    // Normalizador inteligente de busqueda
     if (filtroBusqueda !== '') {
         let busquedaOriginal = filtroBusqueda.toLowerCase().trim();
-        // Corrección de plurales (casuales -> casual, profesionales -> profesional)
         if (busquedaOriginal === 'casuales') busquedaOriginal = 'casual';
         if (busquedaOriginal === 'profesionales') busquedaOriginal = 'profesional';
 
@@ -223,7 +230,7 @@ function abrirDetalleProducto(producto) {
         tb.innerHTML += `<tr><td>${key}</td><td>${val}</td></tr>`;
     }
 
-    // Lógica Galería con Flechas
+    // Lógica Galería
     galeriaImagenes = producto.imagenes;
     galeriaActualIndex = 0;
     actualizarImagenPrincipal();
@@ -400,7 +407,10 @@ document.getElementById('btn-submit-login').addEventListener('click', () => {
             const vistaAnterior = vistaPostLogin;
             vistaPostLogin = null;
             if(vistaAnterior === 'retiro') document.getElementById('btn-continuar-retiro').click();
-            else if(vistaAnterior === 'pedidos') document.getElementById('btn-nav-pedidos').click();
+            else if(vistaAnterior === 'pedidos') {
+                renderizarPedidos();
+                mostrarVista('pedidos');
+            }
         } else {
             mostrarVista('inicio');
         }
@@ -409,29 +419,59 @@ document.getElementById('btn-submit-login').addEventListener('click', () => {
     }
 });
 
-// Mostrar confirmación al hacer clic en el ícono de salir
 document.getElementById('btn-nav-logout').addEventListener('click', () => {
     abrirModal('modal-logout');
 });
 
-// Botón de Cancelar en el modal
 document.getElementById('btn-cancelar-logout').addEventListener('click', () => {
     cerrarModal('modal-logout');
 });
 
-// Botón de Confirmar cierre de sesión
 document.getElementById('btn-confirmar-logout').addEventListener('click', () => {
     usuarioAutenticado = false;
     document.getElementById('user-name-display').textContent = 'Iniciar sesión'; 
     document.getElementById('btn-nav-logout').style.display = 'none';
     
-    // Limpiamos los inputs del login para mayor realismo
     document.getElementById('login-email').value = 'carlos@ejemplo.com';
     document.getElementById('login-pass').value = '123456';
     
     cerrarModal('modal-logout');
     mostrarVista('inicio');
 });
+
+// RESTRICTORES NUMÉRICOS PARA FORMULARIOS
+const formTelefono = document.getElementById('form-telefono');
+if (formTelefono) {
+    formTelefono.addEventListener('input', function (e) {
+        e.target.value = e.target.value.replace(/\D/g, '').substring(0, 10);
+    });
+}
+
+const ccNumInput = document.getElementById('cc-num');
+if (ccNumInput) {
+    ccNumInput.addEventListener('input', function (e) {
+        e.target.value = e.target.value.replace(/\D/g, '').substring(0, 16);
+    });
+}
+
+const ccCvvInput = document.getElementById('cc-cvv');
+if (ccCvvInput) {
+    ccCvvInput.addEventListener('input', function (e) {
+        e.target.value = e.target.value.replace(/\D/g, '').substring(0, 4);
+    });
+}
+
+const ccExpInput = document.getElementById('cc-exp');
+if (ccExpInput) {
+    ccExpInput.addEventListener('input', function (e) {
+        let valor = e.target.value.replace(/\D/g, ''); 
+        if (valor.length > 2) {
+            valor = valor.substring(0, 2) + '/' + valor.substring(2, 4);
+        }
+        e.target.value = valor;
+    });
+}
+
 
 document.getElementById('btn-continuar-retiro').addEventListener('click', () => {
     if (!usuarioAutenticado) {
@@ -447,7 +487,24 @@ document.getElementById('btn-continuar-retiro').addEventListener('click', () => 
     mostrarVista('retiro');
 });
 
+// VALIDACIÓN DEL FORMULARIO DE RETIRO
 document.getElementById('btn-continuar-pago').addEventListener('click', () => {
+    const nombre = document.getElementById('form-nombre').value.trim();
+    const telefono = document.getElementById('form-telefono').value.trim();
+    const correo = document.getElementById('form-correo').value.trim();
+
+    // Verificamos si los campos están vacíos
+    if (nombre === '' || telefono === '' || correo === '') {
+        document.getElementById('txt-modal-error').textContent = 'Por favor, completa todos los campos (Nombre, Teléfono y Correo) para poder continuar.';
+        return abrirModal('modal-error');
+    }
+
+    // Verificamos que el teléfono tenga 10 dígitos exactamente
+    if (telefono.length !== 10) {
+        document.getElementById('txt-modal-error').textContent = 'El número de teléfono debe tener exactamente 10 dígitos.';
+        return abrirModal('modal-error');
+    }
+
     let total = carrito.reduce((acc, i) => acc + (i.precio * i.cantidad), 0);
     document.getElementById('resumen-pago-total').textContent = `$${total.toLocaleString('es-EC',{minimumFractionDigits:2})}`;
     mostrarVista('pago');
@@ -478,6 +535,8 @@ document.getElementById('btn-confirmar-pago').addEventListener('click', () => {
         
         // Validación estricta Tarjeta
         if (num.length !== 16 || name === '' || exp.length < 5 || cvv.length < 3) {
+            // Restauramos el mensaje de error original por si fue cambiado en la vista de retiro
+            document.getElementById('txt-modal-error').textContent = 'Verifica que todos los campos de tu tarjeta estén llenos y sean correctos.';
             return abrirModal('modal-error');
         }
     }
@@ -492,24 +551,52 @@ document.getElementById('btn-confirmar-pago').addEventListener('click', () => {
     carrito.forEach(i => { htmlStr += `${i.nombre} x ${i.cantidad}<br>`; });
     document.getElementById('conf-items').innerHTML = htmlStr;
 
+    let estadoPedido, claseEstadoTexto, iconoConfirmacion;
     const estadoP = document.getElementById('conf-estado-pago');
-    if(metodo === 'tarjeta'){ estadoP.textContent = 'Pago: Aprobado'; estadoP.className = 'text-success text-left mb-12'; }
-    else { estadoP.textContent = 'Pago: Pendiente — Efectivo al retirar'; estadoP.className = 'text-sale text-left mb-12'; }
 
-    pedidos.push({ num: numPedido, fecha: new Date().toLocaleDateString('es-EC'), total: total, estado: 'Confirmado', items: [...carrito] });
-    carrito = []; actualizarBadgeCarrito(); mostrarVista('confirmacion');
+    if(metodo === 'tarjeta'){ 
+        estadoP.textContent = 'Pago: Aprobado'; 
+        estadoP.className = 'text-success text-left mb-12'; 
+        estadoPedido = 'Pago procesado';
+        claseEstadoTexto = 'text-success';
+        iconoConfirmacion = '✓';
+    } else { 
+        estadoP.textContent = 'Pago: Pendiente — Efectivo al retirar'; 
+        estadoP.className = 'text-sale text-left mb-12'; 
+        estadoPedido = 'Pendiente de pago';
+        claseEstadoTexto = 'text-sale';
+        iconoConfirmacion = '⏱';
+    }
+
+    pedidos.push({ 
+        num: numPedido, 
+        fecha: new Date().toLocaleDateString('es-EC'), 
+        total: total, 
+        estado: estadoPedido, 
+        claseColor: claseEstadoTexto,
+        icono: iconoConfirmacion,
+        items: [...carrito] 
+    });
+    
+    carrito = []; 
+    actualizarBadgeCarrito(); 
+    mostrarVista('confirmacion');
 });
 
 // PEDIDOS
 function renderizarPedidos() {
+    const contNoAuth = document.getElementById('pedidos-no-auth');
+    const contLleno = document.getElementById('pedidos-llenos');
+    const contVacio = document.getElementById('pedidos-vacio');
+    
     if(!usuarioAutenticado) {
-        vistaPostLogin = 'pedidos';
-        mostrarVista('login');
+        contNoAuth.style.display = 'block';
+        contLleno.style.display = 'none';
+        contVacio.style.display = 'none';
         return;
     }
 
-    const contLleno = document.getElementById('pedidos-llenos');
-    const contVacio = document.getElementById('pedidos-vacio');
+    contNoAuth.style.display = 'none';
 
     if(pedidos.length === 0){ 
         contVacio.style.display = 'block'; 
@@ -527,18 +614,19 @@ function renderizarPedidos() {
         lista.innerHTML += `
         <div class="pedido-card">
             <strong>#${p.num}</strong>
-            <span>${p.fecha}</span>
+            <span class="text-secondary">${p.fecha}</span>
             <strong>$${p.total.toLocaleString('es-EC',{minimumFractionDigits:2})}</strong>
-            <span class="text-success">✓ ${p.estado}</span>
-            <span class="link-detalle" style="cursor:pointer;" onclick="verDetallePedido(${index})">Ver detalle →</span>
+            <span class="${p.claseColor}">${p.icono} ${p.estado}</span>
+            <button class="btn-link" onclick="verDetallePedido(${index})">Ver detalle →</button>
         </div>`;
     });
 }
 
-function verDetallePedido(index) {
+window.verDetallePedido = function(index) {
     const p = pedidos[index];
     document.getElementById('md-num').textContent = `#${p.num}`;
     document.getElementById('md-estado').textContent = p.estado;
+    document.getElementById('md-estado').className = p.claseColor;
     document.getElementById('md-total').textContent = `$${p.total.toLocaleString('es-EC',{minimumFractionDigits:2})}`;
     
     let htmlItems = '';
@@ -552,9 +640,38 @@ function verDetallePedido(index) {
             </div>
         </div>`;
     });
+
+    let pickupTitle = '';
+    let pickupBorder = '';
+    let pickupTextClass = '';
+
+    if (p.estado === 'Pendiente de pago') {
+        pickupTitle = 'Recuerda pagar y retirar en:';
+        pickupBorder = 'var(--color-sale)';
+        pickupTextClass = 'text-sale';
+    } else {
+        pickupTitle = 'No olvides retirar tu pedido en:';
+        pickupBorder = 'var(--color-success)';
+        pickupTextClass = 'text-success';
+    }
+
+    htmlItems += `
+    <div class="punto-retiro mt-16" style="border-left: 4px solid ${pickupBorder};">
+        <p class="${pickupTextClass} d-flex-align">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-8"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+            <strong>${pickupTitle}</strong>
+        </p>
+        <p class="text-secondary mt-12">LENS & SHOT - Quito, Condado Shopping<br>Horario: 09:00–18:00 De lunes a viernes</p>
+    </div>`;
+
     document.getElementById('md-items').innerHTML = htmlItems;
     abrirModal('modal-detalle-pedido');
-}
+};
+
+document.getElementById('btn-pedidos-login').addEventListener('click', () => {
+    vistaPostLogin = 'pedidos';
+    mostrarVista('login');
+});
 
 // NAVEGACION
 function sincronizarBotonesActivos() {
@@ -586,41 +703,38 @@ document.querySelectorAll('.btn-seguir-general').forEach(btn => {
     btn.addEventListener('click', () => { mostrarVista('catalogo'); actualizarCatalogo(); });
 });
 
-
 logoBtn.addEventListener('click', () => { searchInput.value=''; filtroBusqueda=''; mostrarVista('inicio'); });
 btnAtrasGlobal.addEventListener('click', () => { searchInput.value=''; filtroBusqueda=''; mostrarVista('inicio'); });
 
 document.getElementById('btn-nav-carrito').addEventListener('click', () => { renderizarCarrito(); mostrarVista('carrito'); });
-document.getElementById('btn-nav-pedidos').addEventListener('click', () => { renderizarPedidos(); mostrarVista('pedidos'); });
-document.getElementById('btn-ver-mis-pedidos-conf').addEventListener('click', () => { renderizarPedidos(); mostrarVista('pedidos'); });
+
+document.getElementById('btn-nav-pedidos').addEventListener('click', () => { 
+    renderizarPedidos(); 
+    mostrarVista('pedidos'); 
+});
+
+document.getElementById('btn-ver-mis-pedidos-conf').addEventListener('click', () => { 
+    renderizarPedidos(); 
+    mostrarVista('pedidos'); 
+});
+
 document.getElementById('btn-nav-login').addEventListener('click', () => {
     if(!usuarioAutenticado) mostrarVista('login');
 });
 
-// Formateo automático de MM/AA
-const ccExpInput = document.getElementById('cc-exp');
-if (ccExpInput) {
-    ccExpInput.addEventListener('input', function (e) {
-        let valor = e.target.value.replace(/\D/g, ''); // Elimina todo lo que no sea número
-        if (valor.length > 2) {
-            valor = valor.substring(0, 2) + '/' + valor.substring(2, 4);
-        }
-        e.target.value = valor;
-    });
-}
+document.getElementById('btn-nav-ayuda').addEventListener('click', () => {
+    abrirModal('modal-ayuda');
+});
+
+// ACCESIBILIDAD: Cerrar modales con ESC
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' || e.key === 'Esc') {
+        document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
+        document.getElementById('overlay').style.display = 'none';
+    }
+});
 
 document.addEventListener('DOMContentLoaded', () => {
     renderizarInicio();
     actualizarCatalogo();
-});
-
-// ACCESIBILIDAD: Cerrar modales con la tecla ESC
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' || e.key === 'Esc') {
-        const modalesAbiertos = document.querySelectorAll('.modal');
-        modalesAbiertos.forEach(modal => {
-            modal.style.display = 'none';
-        });
-        document.getElementById('overlay').style.display = 'none';
-    }
 });
